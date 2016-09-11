@@ -1,0 +1,2 @@
+"Continue with the operation; you may fire when ready."
+"Commence primary ignition."

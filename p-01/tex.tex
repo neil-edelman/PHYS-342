@@ -1,0 +1,177 @@
+\documentclass[twocolumn]{article}
+
+% imports
+\usepackage{times}      % font
+\usepackage{graphicx}   % include graphics
+\usepackage{fullpage}   % book margins -> std margins
+\usepackage{amsmath}    % {align}
+\usepackage{wrapfig}    % {wrapfigure}
+\usepackage{moreverb}   % \verbatimtabinput
+
+\bibliographystyle{plain}
+
+% define "\fig"
+\def\fig#1#2{\begin{figure}[!ht]\begin{center}
+\includegraphics[width=0.32\textwidth]{#1.jpg}
+\end{center}\caption{#2}\label{#1}\end{figure}}
+
+% lists
+\renewcommand{\labelenumi}{\arabic{enumi})}
+\renewcommand{\labelenumii}{\alph{enumii})}
+
+% Muhamed Razalee Yusoff -- 260263544,
+% Neil Edelman -- 110121860,
+% Daniel Smilowitz -- 260214511,
+% Olivier Shelbaya -- 260279844
+
+% info
+\author{Muhamed Razalee Yusoff, Neil Edelman, Daniel Smilowitz, Olivier Shelbaya}
+\title{Magnetic Simulation of Exploding Planet by Death Star}
+\date{2009-02-15}
+
+\begin{document}\maketitle
+
+\begin{abstract}
+The Gauss-Seidel iterative algorithm was used to simulate the magnetic
+field on a constant grid. Each grid point has a possibly different
+permeability, this allows magnetism to propagate through different
+mediums. We used it to simulate a planet much like the Earth, represented
+by a rotating molten magma core and a surrounding region of Olivine.
+This planet is then hit by a positron beam from the Death Star which destroys it.
+\end{abstract}
+
+\section{Introduction}
+The Death Star is the ultimate weapon of terror in the universe.
+Modeling the Death Star as a sphere of iron, we set out to not only
+map the interacting magnetic fields of Earth, but also that of the
+Death Star as it orbits at a distance. Unlike the Earth, the Death
+Star, given a value of $\mu_{Fe}$, does not generate a magnetic field,
+so much as it is permeated by that of the Earth.
+
+\section{Discussion}
+
+The simulation starts off with no current, and an isotropic $\mu_{0}$
+spread out over the volume. The magma is then generated with a circular
+current simulating the core of Earth. Olivine is added to form the mantle
+and this changes the magnetic field because $\mu \ne \mu_{0}$. The Death
+Star appears, having $\mu_{Fe}$. Our simulation also involves a positron
+beam which destroys all of human life. Evidently, this beam will generate
+a magnetic field, as it constitutes a large current.
+
+\section{Theory}
+
+In general, the equation linking the magnetic vector potential,
+$A(r)$, and the associated current is given by
+Equation~\ref{eq-current}\cite{griffiths}.
+
+\begin{equation}
+\nabla \times (\frac{1}{\mu} \nabla \times A) = J
+\label{eq-current}
+\end{equation}
+
+This equation was used to find the vector potential from the model
+currents. Next, we need to model the magnetic field proper. This was
+done by using Equation~\ref{eq-mag}\cite{griffiths}.
+
+\begin{equation}
+B = \nabla \times A
+\label{eq-mag}
+\end{equation}
+
+In order to implement this, we need a grid system to attach a
+vectorial value at each point of space in our given grid. We used
+a rudimentary simple grid (without quadtrees.) Then we used the
+Gauss-Siedel\cite{jackson} algorithm in order to evaluate the values
+at each point in our three-space. In general, the Gauss-Siedel algorithm
+can be expressed as in Equation~\ref{gauss}.
+
+{\footnotesize \begin{equation}
+x^{(k+1)}_i  = \frac{1}{a_{ii}}
+\left(b_i - \sum_{j<i}a_{ij}x^{(k+1)}_j-
+\sum_{j>i}a_{ij}x^{(k)}_j\right),\, i=1,2,\ldots,n.
+\label{gauss}
+\end{equation}}
+
+A relaxation factor of $1.9$ was used for the computation. It was found
+that this gave good convergence.
+
+The simulated Earth-like planet was a core of iron with a $\mu$ of
+$5000$\cite{taylor}. We found our model converged very slowly with such
+an extreme magnetic permeability, so we massaged it accordingly. The
+mantle was a layer of Olivine\cite{gunn}\cite{iwa}; again, our model
+diverged with so low a value, so we set it to $0.3$.
+
+The current around the boundary was zero and $\mu_{r}$ was one. Magnetic
+fields were not calculated at the boundary; this gave $A($boundary$) =
+\vec{0}$ as a boundary condition, consistent with space.
+
+A Monte Carlo algorithm was used to update the points. We didn't notice
+a difference at 32 grid granularity.
+
+\section{Results}
+
+The $\mu_{r}$ values that were used in the programming were 0.3 for Olivine,
+0.9 for iron and magma, and 4 for plasma. These were determined to produce a
+convergence in the Gauss-Seidel algorithm. The graphics engine assigned
+a value of $1 - \mu$ to the colour and the size of the point.
+
+\begin{table}[!htb]
+\begin{center}
+\begin{tabular}{r c c c}
+ & Error & Frame & Zero \\
+\hline
+Space &         0.00 & 0 &  0 \\
+Planet Core &  36.15 & 1 & 58 \\
+Planet Crust &  0.69 & 0 & 50 \\
+Death Star &    0.00 & 0 &  0 \\
+Poof &       9486.97 &27 &117
+\end{tabular}
+\caption{Normalised maximum average errors, the frame that it happens,
+and the frame that the errors to go to zero. The Death Star was too
+far away from the planet to have an effect on it's magnetic field.}
+\end{center}
+\label{err}
+\end{table}
+
+As seen in Table \ref{err}, the maximum variances were made by introducing new elements into the simulation, as expected. These variances are exact because the simulation was the same every time. The `Poof' phase, values
+were not static, the Earth was blowing up, so high values were expected.
+
+\fig{death}{Emergence of Death Star.}
+
+We see in Figure \ref{death} the station arriving, entering Earth's orbit.
+Notice the magnetic lines emanating from the Earth produced by the
+geodynamo.
+
+\fig{positron}{Positron beam from Death Star.}
+
+In Figure \ref{positron}, after Grand Moff Tarkin gives the go-ahead, the
+positron beam is unleashed on the unsuspecting population of Earth.
+
+\fig{exploded}{Planet exploding.}
+
+In Figure \ref{exploded} we see the plasma remnants of the Earth. This
+was taken just before the field created by the vaporised magma
+dissipated thought space.
+
+\section{Conclusion}
+According to preliminary results, it shows that the Earth cannot
+survive a positron beam attack. The magnetic field were
+successfully generated from the modeled currents with adequate
+precision. With modified $\mu$ values to prevent divergence, the
+Gauss-Seidel iteration method proved reasonably successful.
+
+\bibliography{tex}
+
+\onecolumn
+\appendix
+
+\section{Simulation.c}
+{\tiny \verbatimtabinput{Simulation.c}}
+
+\section{Simulation.h}
+{\tiny \verbatimtabinput{Simulation.h}}
+
+\section{Open.c}
+{\tiny \verbatimtabinput{Open.c}}
+
+\end{document}

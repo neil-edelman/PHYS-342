@@ -1,0 +1,168 @@
+\documentclass[twocolumn]{article}
+
+% imports
+\usepackage{times}      % font
+\usepackage{graphicx}   % include graphics
+\usepackage{fullpage}   % book margins -> std margins
+\usepackage{amsmath}    % {align}
+\usepackage{wrapfig}    % {wrapfigure}
+\usepackage{moreverb}   % \verbatimtabinput
+
+\bibliographystyle{plain}
+
+% define "\fig"
+\def\fig#1#2{\begin{figure}[!ht]\begin{center}
+\includegraphics[width=0.24\textwidth]{#1.jpg}
+\end{center}\caption{#2}\label{#1}\end{figure}}
+
+% lists
+\renewcommand{\labelenumi}{\arabic{enumi})}
+\renewcommand{\labelenumii}{\alph{enumii})}
+\renewcommand{\vec}[1]{\boldsymbol{#1}}
+
+% Muhamed Razalee Yusoff -- 260263544,
+% Neil Edelman -- 110121860,
+% Daniel Smilowitz -- 260214511,
+% Olivier Shelbaya -- 260279844
+
+% info
+\author{Muhamed Razalee Yusoff, Neil Edelman, Daniel Smilowitz, Olivier Shelbaya}
+\title{CERN Destroys Alien Ship}
+\date{2009-04-02}
+
+\begin{document}\maketitle
+
+\section{Introduction}
+Antennae are devices that have become commonplace in today's world. They allow an analogue (or digital) signal carried
+via wire to be transmitted through space by emitting electric fields, which then induce a current in another antenna,
+further away. As a consequence of the varying electric field, a magnetic field is simultaneously generated, although
+it is smaller than the electric field by a factor $\frac{1}{c}$. For high powered antennae, as employed in this simulation,
+the magnetic field becomes non-negligable.
+\par
+
+\noindent This becomes very important in the practical concept demonstrated in this work: the destruction of a spaceship. Spaceships
+are generally terrifying vessels of destruction which can allow for the birth of interplanetary empires of evil. It is
+therefore very important to know how to destroy them, theoretically anyways...
+\par
+
+A high powered EM wave (Gigahertz range frequency) is sent via high gain antenna (i.e. most of the signal entering the antenna by wire exits as an EM 
+field) into an unsuspecting spaceship, driving the spaceship to its \textbf{resonance frequency},
+causing the vessel to explode. Spaceships \textit{do} present many similar points to oscillators. For one, they have matter,
+and matter oscillates. Our hypothesis is therefore verified, and the math may begin.
+
+\section{Theory}
+\noindent In order to accomplish simulation, the following concepts were employed:
+
+\noindent The poynting vector is derived from the definition of \textbf{energy} in an electromagnetic
+field:
+
+\begin{equation}
+U_{em} = \frac{1}{2}\int \Bigg( \epsilon_{0}E^{2} + \frac{1}{\mu_{0}}B^{2} \Bigg) d\tau
+\end{equation}
+
+\noindent Using the above definition, along with the lorentz force law and employing vector product rules,
+it is possible to find that:
+
+\begin{equation}
+\frac{dW}{dt} \propto - \frac{1}{\mu_{0}} \oint (\textbf{E} \times \textbf{B}) \cdot d\textbf{a}
+\end{equation}
+
+\noindent That is, the energy per unit time and area can be described by the \textbf{Poynting Vector}:
+
+\begin{equation}
+\vec{\textbf{S}} = \frac{1}{\mu_{0}}(\textbf{E} \times \textbf{B})
+\end{equation}
+
+\noindent As can be seen by analyzing the cross product of the definition, since E and B are perpendicular by definition, the poynting vector points 
+in the direction of propagation of the EM wave.
+\par
+The next definition of interest is that of the \textbf{energy and momentum} for an EM wave. Although the physical quantity is small, electromagnetic 
+waves nevertheless carry a small quantity of energy (obviously much less than a sound wave, for example). Equation (1) describes the energy per unit 
+volume (in 3-space) of an EM wave. 
+
+\noindent The \textbf{momentum} of an electromagnetic wave is, by definition, in terms of the speed of light, \textit{c}
+
+\begin{equation}
+\vec{\textbf{P}}_{em} = \frac{1}{c^{2}} \vec{\textbf{S}}
+\end{equation}
+
+\noindent Since we are in the presence of time-dependant potentials and fields, in order to calculate the fields at a distant point of interest as a 
+function of time, \textbf{Jefimenko's Equations}, which are the electrodynamic generalisations of the coulomb and biot-savart laws were employed.
+\par
+The electric field Jefimenko equation is:
+
+\tiny
+\begin{equation}
+ \vec{E}(\vec{r},t) = 
+\frac{1}{4\pi\epsilon_0}\int\left(\frac{\rho(\vec{r'},t_r)\,\vec{R}}{R^3}+\frac{\vec{R}}{R^2c}\frac{\partial\rho(\vec{r'},t_r)}{\partial 
+t} - 
+\frac{1}{Rc^2}\frac{\partial \vec{J}(\vec{r'},t_r)}{\partial t}\right)d\tau'
+\end{equation}
+\normalsize
+\par
+While the Magnetic field Jefimenko equation is:
+
+\small
+\begin{equation}
+\vec{B}(\vec{r},t) = \frac{\mu_0}{4\pi}\int{
+	\left(\frac{\vec{J}(\vec{r'},t_r)}{R^2}+\frac{ 
+	\vec{\dot{J}}(\vec{r'},t_r)}{cR}\right)\times\hat{R}\;\;d\tau'}
+\end{equation}
+\normalsize
+\par
+
+\noindent Taking:
+
+\begin{equation}
+\vec{J}(r',t')=\vec{J(\vec{r'})}e^{i{\omega}t}e^{-i\frac{\omega}{c}R}
+\end{equation}
+\par
+
+\indent We approximate:
+
+\begin{equation}
+e^{i{\omega}t}=cos\left(\frac{\omega}{c}R\right)+isin\left(\frac{\omega}{c}R\right)
+\end{equation}
+\par
+
+\noindent Finally, since all of the aformentionned quantites pertain to phenomenon which are oscillatory by construction, their instantaneous values 
+are of little use for modelization. The \textbf{time average} is used, as it gives a better representation of the average value, for one cycle. The 
+time average operator is defined as:
+
+\begin{equation}
+\langle \rangle = \frac{1}{T} \int dt
+\end{equation}
+
+where T is the period of oscillation, in seconds.
+
+\section{Results}
+\fig{p-02a}{Step 1 : Alien Spaceship spotted entering Earth's orbit}
+
+\fig{p-02b}{Charged particles located in CERN start to accelerate, generating EM radiation}
+
+\fig{p-02c}{The Intensity increases further as the particles reach maximum velocity}
+
+\fig{p-02d}{The integrity of the Spaceship can no longer tolerate the intense Electro-magnetic radiation and EXPLODES}
+
+\section{Conclusion}
+The results achieved were not as expected. The motion of the accelerating charged particles can be modelled by a ring of current (Figure 2), thereby 
+producing a Torus shaped Magnetic field. However, as can be seen in the above images, the field produced was not that of a Torus shape. Nonetheless, 
+the method employed was indeed successful in detering the Alien invasion as can seen by the explosion in Figure 4. 
+
+\onecolumn
+
+\section{Bibliography}
+"Introduction to Electrodynamics", 3rd Edition, David J. Griffiths, Prentice-Hall Inc., 1999. 
+
+\appendix
+
+\section{Simulation.c}
+{\tiny \verbatimtabinput{Simulation.c}}
+
+\section{Simulation.h}
+{\tiny \verbatimtabinput{Simulation.h}}
+
+\section{Open.c}
+{\tiny \verbatimtabinput{Open.c}}
+
+\end{document}
